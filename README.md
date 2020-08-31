@@ -22,36 +22,12 @@
 
 環境構築の詳細については [provisioning](./provisioning) を参照。
 
-### 環境構築
-
-xbuildで言語をインストールする。ベンチマーカーのためにGoは必須。他の言語は使わないのであればスキップしても問題ない。
-
-```
-cd
-git clone https://github.com/tagomoris/xbuild.git
-
-mkdir local
-xbuild/go-install     1.10.3  $HOME/local/go
-xbuild/perl-install   5.28.0  $HOME/local/perl
-xbuild/ruby-install   2.5.1   $HOME/local/ruby
-xbuild/node-install   v8.11.4 $HOME/local/node
-xbuild/python-install 3.7.0   $HOME/local/python
-xbuild/php-install    7.2.9   $HOME/local/php -- --with-pcre-regex --with-zlib --enable-fpm --enable-pdo --with-pear --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-openssl --with-pcre-regex --with-pcre-dir --with-libxml-dir --enable-opcache --enable-bcmath --with-bz2 --enable-calendar --enable-cli --enable-shmop --enable-sysvsem --enable-sysvshm --enable-sysvmsg --enable-mbregex --enable-mbstring --enable-pcntl --enable-sockets --with-curl --enable-zip
-```
-
 ### ベンチマーカーの準備
-
-Goを使うのでこれだけは最初に環境変数を設定しておく
-
-```
-export PATH=$HOME/local/go/bin:$HOME/go/bin:$PATH
-```
 
 ビルド
 
 ```sh
 $ cd bench
-$ make deps
 $ make
 ```
 
@@ -78,19 +54,13 @@ mysql> GRANT ALL on torb.* TO isucon@'localhost';
 $ ./db/init.sh
 ```
 
-### 参考実装(perl)を動かす
-
-初回のみ
-
-```
-$ cd webapp/perl
-$ cpanm --installdeps --notest --force .
-```
+### 参考実装(Go)を動かす
 
 起動
 
 ```
-$ ./run_local.sh
+$ cd webapp/go
+$ make run
 ```
 
 ### ベンチマーク実行
@@ -105,6 +75,23 @@ $ ./bin/bench -remotes=127.0.0.1:8080 -output result.json
 
 ```
 $ jq . < result.json
+```
+
+### 環境構築
+
+xbuildで言語をインストールする。ベンチマーカーのためにGoは必須。他の言語は使わないのであればスキップしても問題ない。
+
+```
+cd
+git clone https://github.com/tagomoris/xbuild.git
+
+mkdir local
+xbuild/go-install     1.10.3  $HOME/local/go
+xbuild/perl-install   5.28.0  $HOME/local/perl
+xbuild/ruby-install   2.5.1   $HOME/local/ruby
+xbuild/node-install   v8.11.4 $HOME/local/node
+xbuild/python-install 3.7.0   $HOME/local/python
+xbuild/php-install    7.2.9   $HOME/local/php -- --with-pcre-regex --with-zlib --enable-fpm --enable-pdo --with-pear --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-openssl --with-pcre-regex --with-pcre-dir --with-libxml-dir --enable-opcache --enable-bcmath --with-bz2 --enable-calendar --enable-cli --enable-shmop --enable-sysvsem --enable-sysvshm --enable-sysvmsg --enable-mbregex --enable-mbstring --enable-pcntl --enable-sockets --with-curl --enable-zip
 ```
 
 ## 既知の不具合
