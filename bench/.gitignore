@@ -1,4 +1,5 @@
 bin
+!bin/.gitkeep
 pkg
 vendor
 cache/*.gob
